@@ -1,4 +1,5 @@
 
+![Print](https://i.imgur.com/YM2j0zV.jpg)
 
 **Have you ever tried translating a 7 Days to Die mod? The process can be incredibly tedious and time-consuming, but this tool is designed to save you a lot of time.**
 
