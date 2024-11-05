@@ -1,0 +1,29 @@
+{
+  "name": "gpt-7day-tools",
+  "version": "1.0.0",
+  "description": "A simple utility tools for 7 days to die modders",
+  "bin": {
+    "7d2d": "dist\\7d2dtools.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "exports": "./dist/7d2dtools.js",
+  "author": "Murilo Goedert",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.8.4",
+    "typescript": "^5.6.3"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "dependencies": {
+    "@types/cli-progress": "^3.11.6",
+    "cli-progress": "^3.12.0",
+    "commander": "^12.1.0",
+    "csv-parser": "^3.0.0",
+    "nodemon": "^3.1.7",
+    "openai": "^4.69.0"
+  }
+}

@@ -1,0 +1,11 @@
+{
+    "watch": [
+        "./"
+    ],
+    "ext": "ts",
+    "exec": "tsc",
+    "ignore": [
+        "*.js",
+        "*.map"
+    ]
+}
