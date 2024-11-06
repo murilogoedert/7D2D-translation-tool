@@ -53,6 +53,49 @@ You can also keep versions of the dump file for future comparison when the mod a
 
 **Note**: Typing `7d2d` in the terminal will bring up a help screen with a list of available commands.
 
+Aqui está a conversão do BBCode para Markdown:
+
+---
+
+*If the command throws an error, try this:*
+
+- *Make sure that you didn't delete the tool's folder.*
+- *Try other cmd tools like CMD or [**Windows Terminal**](https://apps.microsoft.com/detail/9n0dx20hk701?hl=en-US&gl=US)*
+- *Try adding `npx` right before the command, e.g., `npx 7d2d ld`*
+
+---
+
+## **Sharing your translation:**
+
+In order to share your mod, you will need to create a Mod folder in this format:
+
+```
+.../MyMod/
+   ModInfo.xml
+   Config/
+      Localization.txt  <-- Put the translated content here
+```
+
+Here's a simple `ModInfo.xml` content for your mod:
+
+```xml
+<xml>
+    <Name value="MOD_NAME_HERE" />
+    <DisplayName value="MOD_DISPLAY_NAME_HERE" />
+    <Version value="0.1" /> 
+    <Description value="MOD_DESCRIPTION_HERE" />
+    <Author value="YOUR_NAME_HERE" />
+    <Website value="MOD_WEBSITE_HERE" /> 
+</xml>
+```
+
+---
+
+### *Note:*  
+If you encounter multiple errors when loading your translation right after the FunPimps logo, try adding "ZZZZZZZZZZZZZZ" at the beginning of your mod folder's name. This will force it to load after all other mods, probably solving this issue.
+
+Now you can zip your "MyMod" folder and share it with your friends!
+
 ### Upcoming Features:
 
 - A merging tool to help visualize changes between mod releases.
