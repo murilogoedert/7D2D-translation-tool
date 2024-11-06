@@ -41,6 +41,9 @@ async function findLocalizationFiles(
 }
 
 async function dumpLanguage(args: any) {
+  const extraKeys: string[] = (args.keys ?? []).map((key: string) =>
+    key.toLowerCase()
+  );
   const lang = (args.language || ("english" as string)).toLowerCase();
   const targetLang = args.targetLanguage
     ? args.targetLanguage.toLowerCase()
@@ -80,11 +83,12 @@ async function dumpLanguage(args: any) {
   const bar = new progress.SingleBar({}, progress.Presets.shades_classic);
   bar.start(localizationFiles.length, 0);
 
-  let combinedData: { Key: string; Value: string }[] = [];
+  let combinedData: { Key: string; Value: string; ExtraValues: string[] }[] =
+    [];
   let count = 1;
   for (const file of localizationFiles) {
     let doIgnore = false;
-    const rows: { Key: string; Value: string }[] = [];
+    const rows: { Key: string; Value: string; ExtraValues: string[] }[] = [];
     await new Promise((resolve, reject) => {
       const parser = fs
         .createReadStream(file)
@@ -100,6 +104,12 @@ async function dumpLanguage(args: any) {
             return;
           }
         }
+        const ExtraValues = extraKeys.map((key: string) => {
+          const index = Object.keys(data).findIndex(
+            (header) => header.toLowerCase() == key
+          );
+          return data[Object.keys(data)[index]];
+        });
         const index = Object.keys(data).findIndex(
           (key) => key.toLowerCase() == lang.toLowerCase()
         );
@@ -126,6 +136,7 @@ async function dumpLanguage(args: any) {
           }
           rows.push({
             Key: data.Key || data.key,
+            ExtraValues,
             Value,
           });
         }
@@ -133,7 +144,7 @@ async function dumpLanguage(args: any) {
       parser.on("end", () => resolve(rows));
       parser.on("error", reject);
     }).catch((err) => {
-      console.log(err);
+      console.error(err);
     });
 
     await new Promise((resolve) => setTimeout(resolve, 10));
@@ -152,9 +163,22 @@ async function dumpLanguage(args: any) {
   }
   combinedData.sort((a, b) => a.Key.localeCompare(b.Key));
 
-  combinedData.unshift({ Key: "Key", Value: targetLang || lang });
+  combinedData.unshift({
+    Key: "Key",
+    ExtraValues: extraKeys,
+    Value: targetLang || lang,
+  });
+  const separator = googleTranslate ? "º" : ",";
   const outputContent = combinedData
-    .map((row) => `${row.Key}${googleTranslate ? "º" : ","}${row.Value}`)
+    .map((row) => {
+      let extraColumns = "";
+      if (extraKeys.length > 0) {
+        for (const index in extraKeys) {
+          extraColumns += `${row.ExtraValues[index] || ""}${separator}`;
+        }
+      }
+      return `${row.Key}${separator}${extraColumns}${row.Value}`;
+    })
     .join("\n");
   await fs.promises.writeFile(
     path.join(process.cwd(), "Localization-DUMP.txt"),
@@ -164,7 +188,7 @@ async function dumpLanguage(args: any) {
   bar.stop();
   console.log("\nLocalization file created at ./Localization-DUMP.txt");
   if (ignoredFiles.length > 0) {
-    console.log(
+    console.warn(
       "\nFiles ignored because of the ignored language (" + ignored + ")"
     );
     console.table(
@@ -174,7 +198,7 @@ async function dumpLanguage(args: any) {
   }
   if (filesWitError.length > 0) {
     console.log(
-      "\nFiles with errors, should be checked manually for non existing selected language or malformed csv content:"
+      "\nFiles with errors (or ignored), should be checked manually for non existing selected language or malformed csv content (or keys containing usedInMainMene):"
     );
     console.table(
       filesWitError.map((file) => ({ File: file })),
@@ -205,6 +229,7 @@ program
   .alias("ld")
   .description("Dump the game Localization data to ./dump/Localization.txt")
   .option("-l, --language [language]", "The language to dump", "english")
+  .option("-k, --keys [names...]", "Extra keys to dump", [])
   .option(
     "-tl, --target-language [targetLanguage]",
     "The target Language of the translation dump"
