@@ -1,5 +1,7 @@
 
 ![Print](https://i.imgur.com/YM2j0zV.jpg)
+[**Mod Link**](https://www.nexusmods.com/7daystodie/mods/6438)
+
 
 **Have you ever tried translating a 7 Days to Die mod? The process can be incredibly tedious and time-consuming, but this tool is designed to save you a lot of time.**
 
@@ -40,10 +42,11 @@ To create a dump of all localization files from all mods, navigate to the 7 Days
 7d2d ld
 ```
 
-There are four parameters that you can pass to the `ld` command:
+There are five parameters that you can pass to the `ld` command:
 
 - **`-l | --language`** (Optional) The original language that will be searched inside localization files to dump (Default is "English").
 - **`-tl | --target-language`** (Optional) The target language, used as the second column on the output dump, `-gt` uses this too.
+- **`-k | --keys`** (Optional) Extra keys to add in the dump file, (+ the two default ones).
 - **`-gt | --google-translate`** (Optional) Add the GOOGLETRANSLATE formula to each line based on the `language` and `target-language`.
 - **`-i | --ignore-language`** (Optional) Language to ignore, you can pass the target language of your translation, this way only files that haven’t yet been translated will be dumped.
 
@@ -53,7 +56,16 @@ You can also keep versions of the dump file for future comparison when the mod a
 
 **Note**: Typing `7d2d` in the terminal will bring up a help screen with a list of available commands.
 
-Aqui está a conversão do BBCode para Markdown:
+
+### Examples:
+
+- create a Language dump file for translating all the mods from english to brazilian portuguese, using the google translate feature:
+
+﻿```7d2d ld -gt -l english -tl brazilian``` 
+
+- create a Language dump file for translating all the mods from english to brazilian portuguese, using the google translate feature, including Type and Context columns to the dump file:
+
+﻿```7d2d ld -gt -l english -tl brazilian -k type context﻿```
 
 ---
 
